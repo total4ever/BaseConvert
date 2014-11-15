@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app='BaseConvert'>
 <head>
-    <title></title>
+    <title>Base Calculator</title>
     <script src="bower_components/angular/angular.min.js"></script>
 
 
@@ -14,8 +14,12 @@
     <script src="js/services.js"></script>
 </head>
 <body>
-<div ng-controller='ConvertCtrl' style='max-width: 500px;margin-top:5em;margin-left:auto;margin-right:auto;'>
 
+<div ng-controller='ConvertCtrl' style='max-width: 500px;margin-top:5em;margin-left:auto;margin-right:auto;'>
+    <div class='page-header'>
+        <h1>Base calculator</h1>
+        <h3>Paul Pivaru</h3>
+    </div>
     <div class="panel panel-warning">
         <div class="panel-heading"><span class='glyphicon glyphicon-question-sign' style='padding-right:10px;'></span>How
             to use?
@@ -30,7 +34,19 @@
 
             <p>
                 <kbd>137(8) + 1f(16) = ?(7)</kbd><br>
-                Will convert both of the numbers to base two, add them and then display the result.
+                Will convert both of the numbers to base <b>7</b>, add them and then display the result.
+            </p>
+            <br><br>
+            <h4>Expression for conversions</h4>
+
+            <p><code><var>x</var>(<var>base for x</var>) = ? (<var>base
+                for result</var>)</code></p>
+
+            <p><b>For example</b></p>
+
+            <p>
+                <kbd>123(4)= ?(5)</kbd><br>
+                Will convert 123 from base <b>4</b> to base <b>5</b> and display the result.
             </p>
         </div>
     </div>
@@ -80,10 +96,28 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class='result'>{{result}}</td>
+                    <td class='result'>{{result}}<br><span ng-show="remainder">{{remainder}}</span></td>
                     <td><sub>({{basefnl}})</sub></td>
                 </tr>
 
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-primary" ng-show="result_type == 2">
+        <div class="panel-heading"><span class='glyphicon glyphicon-certificate' style='padding-right:10px;'></span>Result
+        </div>
+        <div class="panel-body">
+            <h4>Conversions</h4>
+            <table>
+                <tbody>
+                <tr>
+                    <td class='mono'>{{acfrom}}<sub>({{acbase}})</sub></td>
+                    <td style='padding-left:10px;padding-right:10px;'><span
+                            class='glyphicon glyphicon-arrow-right'></span></td>
+                    <td class='mono'>{{result}}<sub>({{basefnl}})</sub></td>
+                </tr>
+                </tbody>
             </table>
         </div>
     </div>

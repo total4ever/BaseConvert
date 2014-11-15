@@ -165,6 +165,9 @@ app.factory('ConvertService', function () {
 
     /* Converts from higher base to lower base */
     this.baseConvertDiv = function (nr, from, to) {
+        if(nr == "0")
+            return "0";
+
         var final = "";
         nr = String(nr);
         var x;
@@ -200,6 +203,9 @@ app.factory('ConvertService', function () {
 app.factory('ValidateService', function () {
 
     this.validate_nr = function (nr, base) {
+
+        if(nr.length == 0)
+            return false;
 
         for (var i = 0; i < nr.length; i++) {
             if (typeof values[nr[i]] == 'undefined')

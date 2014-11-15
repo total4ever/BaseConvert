@@ -69,39 +69,42 @@ app.controller('ConvertCtrl', function ($scope, ConvertService, ValidateService)
     $scope.processStuff = function () {
         $scope.result_type = 0;
         $scope.alerts = [];
-        var text = $scope.input;
-        console.log(text);
+        var text = $scope.input.toLowerCase();
         if (text != null) {
 
             var operation = parseOperation(text);
-            console.log(operation);
+
             if (operation == null) {
 
-                $scope.alerts.push('Invalid syntax.');
-                /*var conversion = parseConversion(text);
-                 console.log(conversion);
-                 if(conversion == null)
-                 {
-                 $scope.alerts.push('Invalid syntax.');
-                 }
-                 else
-                 {
-                 /*if(ValidateService.validate_base(conversion.base) == false)
-                 {
-                 $scope.alerts.push('Invalid base ' + conversion.base);
-                 }
-                 else if(ValidateService.validate_base(conversion.result_base) == false)
-                 {
-                 $scope.alerts.push('Invalid base ' + conversion.result_base);
-                 }
-                 else if(ValidateService.validate_nr(conversion.number) == false)
-                 {
-                 $scope.alerts.push('Invalid literal ' + conversion.number + ' for base ' + conversion.base);
-                 }
+                var conversion = parseConversion(text);
+                if (conversion == null) {
+                    $scope.alerts.push('Invalid syntax.');
+                }
+                else {
 
-                 var bases_valid = baseValidator([conversion.base, conversion.result_base]);
+                    var bases_valid = baseValidator([conversion.base, conversion.result_base]);
+                    if (bases_valid)
+                        var nr_valid = nrValidator([
+                            [conversion.number, conversion.base]
+                        ]);
 
-                 }*/
+                    if (bases_valid && nr_valid) {
+                        $scope.result_type = 2;
+
+                        $scope.acfrom = conversion.number;
+                        $scope.acbase = conversion.base;
+
+                        $scope.basefnl = conversion.result_base;
+
+                        if (conversion.base < conversion.result_base) {
+                            $scope.result = ConvertService.baseConvertDiv(conversion.number, conversion.base, conversion.result_base);
+                        }
+                        else {
+                            $scope.result = ConvertService.baseConvertReplace(conversion.number, conversion.base, conversion.result_base);
+                        }
+
+                    }
+                }
             }
             else {
                 var bases_valid = baseValidator([operation.result_base, operation.a.base, operation.b.base]);
@@ -125,7 +128,6 @@ app.controller('ConvertCtrl', function ($scope, ConvertService, ValidateService)
 
                     if (operation.a.base > operation.result_base) {
                         a = ConvertService.baseConvertDiv(a, operation.a.base, operation.result_base);
-                        console.log(a);
                     }
                     else {
                         a = ConvertService.baseConvertReplace(a, operation.a.base, operation.result_base);
