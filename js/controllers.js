@@ -164,7 +164,9 @@ app.controller('ConvertCtrl', function ($scope, ConvertService, ValidateService)
                             $scope.result_type = 0;
                             $scope.alerts.push("Can't divide with more than one digit.");
                         }
-                        $scope.result = ConvertService.baseDiv(a, b, operation.result_base);
+                        var x = ConvertService.baseDiv(a, b, operation.result_base);
+                        $scope.result = x[0];
+                        $scope.remainder = x[1];
                     }
                 }
 
